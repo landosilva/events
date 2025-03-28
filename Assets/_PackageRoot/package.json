@@ -1,10 +1,21 @@
 {
-    "name": "your.own.package",
-    "displayName": "Your own package",
-    "version": "1.0.0",
+    "name": "com.lando.events",
+    "displayName": "Events",
+    "version": "0.0.1",
     "unity": "2019.2",
-    "description": "Some description",
+    "description": "Event driven architecture for Unity.",
 	"dependencies": {
       
-    }
+    },
+    "keywords": [
+        "lando",
+        "unity",
+        "events"
+    ],
+    "author": {
+        "name": "Lando",
+        "email": "orlandobsilva@outlook.com",
+        "url": "https://github.com/landosilva/events"
+    },
+    "type": "library"
 }

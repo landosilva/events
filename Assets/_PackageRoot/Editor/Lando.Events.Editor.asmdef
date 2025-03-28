@@ -1,0 +1,18 @@
+{
+    "name": "Lando.Events.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:22b0c905dd58e47109e580ad0b74b2b1"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
