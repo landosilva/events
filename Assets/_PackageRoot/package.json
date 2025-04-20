@@ -1,7 +1,7 @@
 {
     "name": "com.lando.events",
     "displayName": "Events",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "unity": "2019.2",
     "description": "Event driven architecture for Unity.",
 	"dependencies": {
@@ -17,5 +17,4 @@
         "email": "orlandobsilva@outlook.com",
         "url": "https://github.com/landosilva/events"
     },
-    "type": "library"
 }

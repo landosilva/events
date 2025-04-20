@@ -1,3 +1,14 @@
 {
-	"name": "Lando.Events"
+    "name": "Lando.Events",
+    "rootNamespace": "Lando.Events",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

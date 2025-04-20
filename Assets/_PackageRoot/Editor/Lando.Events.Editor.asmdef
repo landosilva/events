@@ -1,6 +1,6 @@
 {
     "name": "Lando.Events.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "Lando.Events.Editor",
     "references": [
         "GUID:22b0c905dd58e47109e580ad0b74b2b1"
     ],
