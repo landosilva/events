@@ -16,23 +16,7 @@
 ## 🚀 Example Usage
 
 ```csharp
-// Define a custom event
-public class PlayerScoredEvent
-{
-    public int Score { get; set; }
-}
-
-// Subscribe to the event
-EventBus.Subscribe<PlayerScoredEvent>(OnPlayerScored);
-
-// Publish the event
-EventBus.Publish(new PlayerScoredEvent { Score = 10 });
-
-// Event handler
-void OnPlayerScored(PlayerScoredEvent e)
-{
-    Debug.Log($"Player scored: {e.Score}");
-}
+// WIP
 ```
 
 ---
