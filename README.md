@@ -6,7 +6,7 @@
 
 ## 🚀 Overview
 
-- The core **EventBus** maintains a registry of listeners.
+- The core **EventRegistry** maintains a registry of listeners.
 - Components implement `IEventListener<T>` to handle events of type `T`.
 - Custom events are defined as types implementing `IEvent`.
 
@@ -16,9 +16,9 @@ A build-time **Weaver** automatically injects registration and unregistration ca
 
 1. **Detection**: After Unity compiles assemblies, the Weaver (using Mono.Cecil) scans for classes implementing `IEventListener<T>`.
 2. **Injection**:
-   - For **MonoBehaviour** classes, it inserts `EventBus.Register<T>(this)` in `OnEnable` and `EventBus.Unregister<T>(this)` in `OnDisable`.
+   - For **MonoBehaviour** classes, it inserts `EventRegistry.Register<T>(this)` in `OnEnable` and `EventRegistry.Unregister<T>(this)` in `OnDisable`.
    - For **plain classes**, it adds registration in the constructor and unregistration in a finalizer.
-3. **Automation**: No manual action required. Listeners are wired into the EventBus at runtime automatically.
+3. **Automation**: No manual action required. Listeners are wired into the EventRegistry at runtime automatically.
 
 ## 📦 Installation
 

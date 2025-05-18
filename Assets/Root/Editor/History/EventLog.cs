@@ -1,6 +1,6 @@
 using System;
 
-namespace Lando.Events.Editor
+namespace Lando.EventWeaver.Editor.History
 {
     public class EventLog
     {

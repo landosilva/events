@@ -1,4 +1,4 @@
-namespace Lando.Events.Editor
+namespace Lando.EventWeaver.Editor.History
 {
     public enum EventLogType
     {

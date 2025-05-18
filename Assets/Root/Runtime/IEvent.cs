@@ -1,4 +1,4 @@
-namespace Lando.Events
+namespace Lando.EventWeaver
 {
     public interface IEvent
     {

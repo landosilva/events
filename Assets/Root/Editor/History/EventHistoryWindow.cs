@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using Lando.EventWeaver.Events;
 using UnityEditor;
 using UnityEngine;
 
-namespace Lando.Events.Editor
+namespace Lando.EventWeaver.Editor.History
 {
-    public class EventConsoleWindow : EditorWindow,
+    public class EventHistoryWindow : EditorWindow,
         IEventListener<EventRaised>
     {
         private Vector2 _scrollPosition;
@@ -19,14 +20,14 @@ namespace Lando.Events.Editor
         private static Texture2D _evenRowTexture;
         private static Texture2D _oddRowTexture;
 
-        [MenuItem("Tools/Lando/Events/Event Console")]
+        [MenuItem("Tools/Lando/Events/Event History")]
         public static void ShowWindow()
         {
-            EventConsoleWindow window = GetWindow<EventConsoleWindow>();
+            EventHistoryWindow window = GetWindow<EventHistoryWindow>();
             Texture consoleIcon = EditorGUIUtility.IconContent("console.infoicon.sml").image;
             window.titleContent = new GUIContent(text: "Event Console", consoleIcon);
             
-            EventBus.Register(window);
+            EventRegistry.Register(window);
         }
 
         private void OnEnable()
@@ -34,7 +35,7 @@ namespace Lando.Events.Editor
             InitializeTextures();
         }
         
-        private void OnDisable() => EventBus.Unregister(listener: this);
+        private void OnDisable() => EventRegistry.Unregister(listener: this);
 
         private void OnGUI()
         {

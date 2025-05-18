@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Lando.EventWeaver.Events;
 
-namespace Lando.Events
+namespace Lando.EventWeaver
 {
-    public static class EventBus
+    public static class EventRegistry
     {
         private static readonly Dictionary<Type, List<object>> Listeners = new();
 

@@ -1,8 +1,12 @@
 {
-    "name": "Lando.Events",
-    "rootNamespace": "Lando.Events",
-    "references": [],
-    "includePlatforms": [],
+    "name": "Lando.EventWeaver.Editor",
+    "rootNamespace": "Lando.EventWeaver.Editor",
+    "references": [
+        "GUID:22b0c905dd58e47109e580ad0b74b2b1"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
