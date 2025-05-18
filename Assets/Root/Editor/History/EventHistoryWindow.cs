@@ -24,8 +24,8 @@ namespace Lando.EventWeaver.Editor.History
         public static void ShowWindow()
         {
             EventHistoryWindow window = GetWindow<EventHistoryWindow>();
-            Texture consoleIcon = EditorGUIUtility.IconContent("console.infoicon.sml").image;
-            window.titleContent = new GUIContent(text: "Event Console", consoleIcon);
+            Texture windowIcon = EditorGUIUtility.IconContent(name: "console.infoicon.sml").image;
+            window.titleContent = new GUIContent(text: "Event History", windowIcon);
             
             EventRegistry.Register(window);
         }
