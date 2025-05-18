@@ -5,143 +5,132 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-// This window lists events grouped by subscriber base class with foldouts and icons
 namespace Lando.EventWeaver.Editor.Windows
 {
     public class EventViewerWindow : EditorWindow
     {
-        private Vector2 _scrollPos;
-        private Dictionary<string, bool> _foldoutStates = new Dictionary<string, bool>();
-        private GUIStyle _headerStyle;
+        private Vector2 scrollPosition;
+        private Dictionary<string, bool> foldoutStates = new Dictionary<string, bool>();
 
         [MenuItem("Tools/Lando/Event Weaver/Event Viewer")]
         public static void ShowWindow()
         {
-            var window = GetWindow<EventViewerWindow>("Event Viewer");
+            EventViewerWindow window = GetWindow<EventViewerWindow>(false);
             window.minSize = new Vector2(300, 200);
+
+            Texture windowIcon = EditorGUIUtility.IconContent("d_ViewToolZoom").image;
+            window.titleContent = new GUIContent(text: "Event Viewer", windowIcon);
         }
 
         private void OnGUI()
         {
-            // Lazy header style initialization
-            if (_headerStyle == null)
-            {
-                GUIStyle baseStyle = EditorStyles.label ?? new GUIStyle(GUI.skin.label);
-                _headerStyle = new GUIStyle(baseStyle)
-                {
-                    fontStyle = FontStyle.Bold,
-                    fontSize = 14,
-                    normal = { textColor = Color.cyan }
-                };
-            }
-
             if (!EditorApplication.isPlaying)
             {
                 EditorGUILayout.HelpBox("Event Viewer only works during Play mode.", MessageType.Warning);
                 return;
             }
 
-            GUILayout.Label("Registered Events by Subscriber Base Class", _headerStyle);
-            EditorGUILayout.Space();
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
-            _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+            Type registryType = typeof(Lando.EventWeaver.EventRegistry);
+            FieldInfo listenersField = registryType.GetField("Listeners", BindingFlags.NonPublic | BindingFlags.Static);
+            IDictionary<Type, List<object>> listenersDictionary = listenersField?.GetValue(null) as IDictionary<Type, List<object>>;
 
-            // Reflect into EventRegistry Listeners
-            var busType = typeof(Lando.EventWeaver.EventRegistry);
-            var field = busType.GetField("Listeners", BindingFlags.NonPublic | BindingFlags.Static);
-            var dict = field?.GetValue(null) as IDictionary<Type, List<object>>;
-
-            if (dict == null)
+            if (listenersDictionary == null)
             {
-                EditorGUILayout.HelpBox("Could not find or parse EventRegistry.Listeners.", MessageType.Error);
+                EditorGUILayout.HelpBox("Could not find EventRegistry.Listeners.", MessageType.Error);
             }
             else
             {
-                // Group subscribers by base-most known Unity type
-                var grouping = new Dictionary<string, List<(Type eventType, object listener)>>();
-
-                foreach (var kvp in dict)
+                Dictionary<string, List<(Type eventType, object listener)>> grouping = new Dictionary<string, List<(Type, object)>>();
+                foreach ((Type eventType, List<object> list) in listenersDictionary)
                 {
-                    var eventType = kvp.Key;
-                    foreach (var listener in kvp.Value)
+                    foreach (object listener in list)
                     {
-                        var listenerType = listener.GetType();
-                        string baseName;
+                        Type type = listener.GetType();
+                        string baseName = typeof(MonoBehaviour).IsAssignableFrom(type)
+                            ? nameof(MonoBehaviour)
+                            : typeof(EditorWindow).IsAssignableFrom(type)
+                                ? nameof(EditorWindow)
+                                : typeof(ScriptableObject).IsAssignableFrom(type)
+                                    ? nameof(ScriptableObject)
+                                    : type.BaseType?.Name ?? "<No Base>";
 
-                        if (typeof(MonoBehaviour).IsAssignableFrom(listenerType))
-                            baseName = nameof(MonoBehaviour);
-                        else if (typeof(EditorWindow).IsAssignableFrom(listenerType))
-                            baseName = nameof(EditorWindow);
-                        else if (typeof(ScriptableObject).IsAssignableFrom(listenerType))
-                            baseName = nameof(ScriptableObject);
-                        else
-                            baseName = listenerType.BaseType?.Name ?? "<No Base>";
-
-                        if (!grouping.ContainsKey(baseName))
-                            grouping[baseName] = new List<(Type, object)>();
-
+                        if (!grouping.ContainsKey(baseName)) grouping[baseName] = new List<(Type, object)>();
                         grouping[baseName].Add((eventType, listener));
                     }
                 }
 
-                // Render each base class group
-                foreach (var group in grouping.OrderBy(g => g.Key))
+                foreach ((string baseName, List<(Type eventType, object listener)> items) in grouping.OrderBy(p => p.Key))
                 {
-                    string baseName = group.Key;
-                    bool groupExpanded = _foldoutStates.TryGetValue(baseName, out bool gVal) && gVal;
-                    groupExpanded = EditorGUILayout.Foldout(groupExpanded, baseName, true);
-                    _foldoutStates[baseName] = groupExpanded;
+                    bool baseExpanded = foldoutStates.TryGetValue(baseName, out bool baseState) && baseState;
+                    DrawFoldout(baseIndent:0, ref baseExpanded, baseName, "d_Prefab Icon", new Color(0.2f, 0.2f, 0.2f));
+                    foldoutStates[baseName] = baseExpanded;
+                    if (!baseExpanded) continue;
 
-                    if (!groupExpanded)
-                        continue;
-
-                    EditorGUI.indentLevel++;
-
-                    // Within group, events by type
-                    var events = group.Value.GroupBy(x => x.eventType);
-                    foreach (var evGroup in events)
+                    foreach (IGrouping<Type, (Type eventType, object listener)> eventGroup in items.GroupBy(x => x.eventType))
                     {
-                        string evName = evGroup.Key.Name;
-                        bool evExpanded = _foldoutStates.TryGetValue(evName, out bool eVal) && eVal;
-                        evExpanded = EditorGUILayout.Foldout(evExpanded, evName, true);
-                        _foldoutStates[evName] = evExpanded;
+                        string eventName = eventGroup.Key.Name;
+                        bool eventExpanded = foldoutStates.TryGetValue(eventName, out bool eventState) && eventState;
+                        DrawFoldout(baseIndent:1, ref eventExpanded, eventName, "d_UnityLogo", new Color(0.15f, 0.15f, 0.15f));
+                        foldoutStates[eventName] = eventExpanded;
+                        if (!eventExpanded) continue;
 
-                        if (!evExpanded)
-                            continue;
-
-                        EditorGUI.indentLevel++;
-
-                        // List each listener
-                        foreach (var (_, listener) in evGroup)
+                        foreach ((Type _, object listener) in eventGroup)
                         {
-                            var comp = listener as Component;
-                            var unityObj = comp != null ? comp : listener as UnityEngine.Object;
-                            string label = comp != null
-                                ? $"{comp.gameObject.name} ({comp.GetType().Name})"
-                                : listener.GetType().Name;
-
-                            GUIContent content = unityObj != null
-                                ? EditorGUIUtility.ObjectContent(unityObj, unityObj.GetType())
-                                : new GUIContent(label);
-
-                            var style = new GUIStyle(EditorStyles.label) { richText = true };
-                            float lineHeight = EditorGUIUtility.singleLineHeight;
-                            Rect rect = EditorGUILayout.GetControlRect(false, lineHeight);
-                            rect = EditorGUI.IndentedRect(rect);
-
-                            if (GUI.Button(rect, content, style) && unityObj != null)
-                                EditorGUIUtility.PingObject(unityObj);
+                            DrawListenerRow(listener, indentLevel:2);
                         }
-
-                        EditorGUI.indentLevel--;
-                        EditorGUILayout.Space();
                     }
-
-                    EditorGUI.indentLevel--;
                 }
             }
 
             EditorGUILayout.EndScrollView();
+        }
+
+        private void DrawFoldout(int baseIndent, ref bool expanded, string label, string iconName, Color backgroundColor)
+        {
+            float height = EditorGUIUtility.singleLineHeight + 4;
+            Rect controlRect = EditorGUILayout.GetControlRect(false, height);
+            controlRect.xMin += baseIndent * 15;
+
+            Color originalBg = GUI.backgroundColor;
+            GUI.backgroundColor = backgroundColor;
+            GUI.Box(controlRect, GUIContent.none);
+            GUI.backgroundColor = originalBg;
+
+            Rect foldRect = controlRect;
+            foldRect.xMin += 4;
+            Texture icon = EditorGUIUtility.IconContent(iconName).image;
+            GUIContent content = new GUIContent(label, icon);
+            expanded = EditorGUI.Foldout(foldRect, expanded, content, true);
+        }
+
+        private void DrawListenerRow(object listener, int indentLevel)
+        {
+            float height = EditorGUIUtility.singleLineHeight + 2;
+            Rect controlRect = EditorGUILayout.GetControlRect(false, height);
+            controlRect.xMin += indentLevel * 16;
+
+            Component component = listener as Component;
+            UnityEngine.Object unityObject = component != null ? (UnityEngine.Object)component : listener as UnityEngine.Object;
+            string label = component != null
+                ? component.gameObject.name + " (" + component.GetType().Name + ")"
+                : listener.GetType().Name;
+
+            Texture icon = unityObject != null
+                ? EditorGUIUtility.ObjectContent(unityObject, unityObject.GetType()).image
+                : EditorGUIUtility.IconContent("d_console.infoicon").image;
+            GUIContent content = new GUIContent(label, icon);
+
+            Color originalBg = GUI.backgroundColor;
+            GUI.backgroundColor = new Color(0.1f, 0.1f, 0.1f);
+            GUI.Box(controlRect, GUIContent.none);
+            GUI.backgroundColor = originalBg;
+
+            if (GUI.Button(controlRect, content, EditorStyles.label) && unityObject != null)
+            {
+                EditorGUIUtility.PingObject(unityObject);
+            }
         }
     }
 }
