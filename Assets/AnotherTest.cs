@@ -3,7 +3,8 @@ using Lando.Events;
 using UnityEngine;
 
 public class AnotherTest : MonoBehaviour,
-    IEventListener<AnyKeyPressed>
+    IEventListener<AnyKeyPressed>,
+    IEventListener<OnTestEvent2>
 {
     private void Update()
     {
@@ -19,6 +20,11 @@ public class AnotherTest : MonoBehaviour,
     public void OnListenedTo(AnyKeyPressed e)
     {
         Debug.Log($"Key Pressed: {e.KeyCode}");
+    }
+
+    public void OnListenedTo(OnTestEvent2 e)
+    {
+        
     }
 }
 

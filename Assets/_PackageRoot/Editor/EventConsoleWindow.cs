@@ -19,7 +19,7 @@ namespace Lando.Events.Editor
         private static Texture2D _evenRowTexture;
         private static Texture2D _oddRowTexture;
 
-        [MenuItem("Tools/Lando/Event Console")]
+        [MenuItem("Tools/Lando/Events/Event Console")]
         public static void ShowWindow()
         {
             EventConsoleWindow window = GetWindow<EventConsoleWindow>();
