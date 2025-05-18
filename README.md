@@ -4,11 +4,11 @@
 
 Event Weaver is a Unity event bus system that simplifies event-driven architecture by automatically injecting listener registration and unregistration at build time. Navigate the sections below to learn more:
 
-- 🔹 [Overview](#-overview)
-- 🔹 [Weaver Integration](#-weaver-integration)
-- 🔹 [Screenshots](#-screenshots)
-- 🔹 [Installation](#-installation)
-- 🔹 [Example Usage](#-example-usage)
+- [Overview](#-overview)
+- [Weaver Integration](#-weaver-integration)
+- [Screenshots](#-screenshots)
+- [Installation](#-installation)
+- [Example Usage](#-example-usage)
 
 ---
 
@@ -27,11 +27,11 @@ The build-time Weaver (via Mono.Cecil) handles all listener wiring:
 1. **Detection**  
    Scans compiled assemblies for types implementing `IEventListener<T>`.
 2. **Injection for MonoBehaviours**  
-   - 🔹 Inserts `EventRegistry.Register<T>(this)` in `OnEnable`.  
-   - 🔹 Inserts `EventRegistry.Unregister<T>(this)` in `OnDisable`.
+   - Inserts `EventRegistry.Register<T>(this)` in `OnEnable`.  
+   - Inserts `EventRegistry.Unregister<T>(this)` in `OnDisable`.
 3. **Injection for Plain Types**  
-   - 🔹 Adds registration call in the constructor.  
-   - 🔹 Adds unregistration call in the finalizer.
+   - Adds registration call in the constructor.  
+   - Adds unregistration call in the finalizer.
 
 ---
 
