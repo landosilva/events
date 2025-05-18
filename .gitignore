@@ -21,8 +21,8 @@
 
 # Visual Studio cache directory
 .vs/
-
 **/.idea/
+*.DotSettings
 
 # Gradle cache directory
 .gradle/
