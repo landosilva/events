@@ -4,8 +4,8 @@
     "version": "0.0.1",
     "unity": "2019.2",
     "description": "Event driven architecture for Unity.",
-	"dependencies": {
-      
+    "dependencies": {
+        "com.unity.nuget.mono-cecil": "1.11.5"
     },
     "keywords": [
         "lando",
