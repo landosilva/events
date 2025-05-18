@@ -62,8 +62,11 @@ Install via Unity Package Manager using Git URL:
 ## 🛠️ Example Usage
 
 ```csharp
+
+// Creating an Event. It is recommended to use record instead of classes or structs
 public record PlayerScored(int Score) : IEvent;
 
+// Listening to an Event. You literally just need to implement the interface
 public class ScoreDisplay : MonoBehaviour, IEventListener<PlayerScored>
 {
     public void OnListenedTo(PlayerScored e)
@@ -74,7 +77,7 @@ public class ScoreDisplay : MonoBehaviour, IEventListener<PlayerScored>
 
 // Raising events:
 new PlayerScored(10).Raise();
-or
+// or
 PlayerScored playerScored = new (10);
 EventRegistry.Raise(playerScored);
 ```
