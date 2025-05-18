@@ -20,7 +20,7 @@ namespace Lando.EventWeaver.Editor.History
         private static Texture2D _evenRowTexture;
         private static Texture2D _oddRowTexture;
 
-        [MenuItem("Tools/Lando/Events/Event History")]
+        [MenuItem("Tools/Lando/Event Weaver/Event History")]
         public static void ShowWindow()
         {
             EventHistoryWindow window = GetWindow<EventHistoryWindow>();

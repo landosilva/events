@@ -14,7 +14,7 @@ namespace Lando.EventWeaver.Editor.Windows
         private Dictionary<string, bool> _foldoutStates = new Dictionary<string, bool>();
         private GUIStyle _headerStyle;
 
-        [MenuItem("Tools/Lando/Events/Event Viewer")]
+        [MenuItem("Tools/Lando/Event Weaver/Event Viewer")]
         public static void ShowWindow()
         {
             var window = GetWindow<EventViewerWindow>("Event Viewer");
