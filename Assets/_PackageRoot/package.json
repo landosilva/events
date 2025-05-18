@@ -1,21 +1,24 @@
 {
-    "name": "com.lando.events",
-    "displayName": "Events",
+    "name": "com.lando.event-weaver",
+    "displayName": "Event Weaver",
     "version": "0.0.1",
     "unity": "2019.2",
-    "description": "Event driven architecture for Unity.",
+    "description": "Automated event driven architecture for Unity.",
     "dependencies": {
         "com.unity.nuget.mono-cecil": "1.11.5"
     },
     "keywords": [
         "lando",
         "unity",
-        "events"
+        "events",
+        "event",
+        "weaver",
+        "event-weaver",
+        "event-weaver-unity"
     ],
     "author": {
-        "name": "Lando",
+        "name": "Lando Silva",
         "email": "orlandobsilva@outlook.com",
-        "url": "https://github.com/landosilva/events"
-    },
-    "type": "library"
+        "url": "https://github.com/landosilva/event-weaver"
+    }
 }
