@@ -72,8 +72,11 @@ public class ScoreDisplay : MonoBehaviour, IEventListener<PlayerScored>
     }
 }
 
-// Publishing events:
-EventRegistry.Publish(new PlayerScored(10));
+// Raising events:
+new PlayerScored(10).Raise();
+or
+PlayerScored playerScored = new (10);
+EventRegistry.Raise(playerScored);
 ```
 
 Listeners are wired automatically—no manual registration calls needed.
