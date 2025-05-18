@@ -1,18 +1,18 @@
 # 📣 Event Weaver
 
-## Summary
+## 📝 Summary
 
 Event Weaver is a Unity event bus system that simplifies event-driven architecture by automatically injecting listener registration and unregistration at build time. Navigate the sections below to learn more:
 
-- [Overview](#overview)
-- [Weaver Integration](#weaver-integration)
-- [Screenshots](#screenshots)
-- [Installation](#installation)
-- [Example Usage](#example-usage)
+- 🔹 [Overview](#-overview)
+- 🔹 [Weaver Integration](#-weaver-integration)
+- 🔹 [Screenshots](#-screenshots)
+- 🔹 [Installation](#-installation)
+- 🔹 [Example Usage](#-example-usage)
 
 ---
 
-## Overview
+## 🚀 Overview
 
 - **EventRegistry**: Central registry tracking active event listeners.
 - **IEventListener<T>**: Implement this interface in your types to handle events of type `T`.
@@ -20,22 +20,22 @@ Event Weaver is a Unity event bus system that simplifies event-driven architectu
 
 ---
 
-## Weaver Integration
+## ⚙️ Weaver Integration
 
 The build-time Weaver (via Mono.Cecil) handles all listener wiring:
 
 1. **Detection**  
    Scans compiled assemblies for types implementing `IEventListener<T>`.
 2. **Injection for MonoBehaviours**  
-   - Inserts `EventRegistry.Register<T>(this)` in `OnEnable`.  
-   - Inserts `EventRegistry.Unregister<T>(this)` in `OnDisable`.
+   - 🔹 Inserts `EventRegistry.Register<T>(this)` in `OnEnable`.  
+   - 🔹 Inserts `EventRegistry.Unregister<T>(this)` in `OnDisable`.
 3. **Injection for Plain Types**  
-   - Adds registration call in the constructor.  
-   - Adds unregistration call in the finalizer.
+   - 🔹 Adds registration call in the constructor.  
+   - 🔹 Adds unregistration call in the finalizer.
 
 ---
 
-## Screenshots
+## 🖼️ Screenshots
 
 > **Event History**  
 > _Placeholder for Event History window screenshot_
@@ -45,7 +45,7 @@ The build-time Weaver (via Mono.Cecil) handles all listener wiring:
 
 ---
 
-## Installation
+## 📦 Installation
 
 Install via Unity Package Manager using Git URL:
 
@@ -59,7 +59,7 @@ Install via Unity Package Manager using Git URL:
 
 ---
 
-## Example Usage
+## 🛠️ Example Usage
 
 ```csharp
 public record PlayerScored(int Score) : IEvent;
@@ -72,12 +72,12 @@ public class ScoreDisplay : MonoBehaviour, IEventListener<PlayerScored>
     }
 }
 
-// Raising events:
-new PlayerScored(100).Raise();
+// Publishing events:
+EventRegistry.Publish(new PlayerScored(10));
 ```
 
 Listeners are wired automatically—no manual registration calls needed.
 
 ---
 
-*Thank you for using Event Weaver!*
+*❤️ Thank you for using Event Weaver!*
