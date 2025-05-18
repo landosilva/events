@@ -78,13 +78,6 @@ public class EnemyTracker : MonoBehaviour, IEventListener<EnemyDefeated>
 }
 ```
 
-Now, anywhere in your code you can publish events without worrying about wiring:
-
-```csharp
-EventRegistry.Publish(new PlayerScored(10));
-EventRegistry.Publish(new EnemyDefeated("Goblin"));
-```
-
 Listeners will automatically register and unregister at runtime, making event-driven communication effortless.
 
 ---
