@@ -64,7 +64,10 @@ Install via Unity Package Manager using Git URL:
 ```csharp
 
 // Creating an Event. It is recommended to use record instead of classes or structs
-public record PlayerScored(int Score) : IEvent;
+public record PlayerScored(int Score) : IEvent
+{
+    public int Score { get; } = Score;
+}
 
 // Listening to an Event. You literally just need to implement the interface
 public class ScoreDisplay : MonoBehaviour, IEventListener<PlayerScored>
